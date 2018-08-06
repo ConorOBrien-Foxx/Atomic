@@ -13,135 +13,48 @@ union NounValue {
 	char character;
 };
 
-class Noun : Entity {
+class Noun : public Entity {
 private:
 	NounValue value;
 	NounTag tag;
 
 public:
-	Noun(int64_t i) {
-		value.integer = i;
-		tag = NT_INTEGER;
-	}
-	Noun(double d) {
-		value.floating = d;
-		tag = NT_FLOATING;
-	}
-	Noun(bool b) {
-		value.boolean = b;
-		tag = NT_BOOLEAN;
-	}
-	Noun(char c) {
-		value.character = c;
-		tag = NT_CHARACTER;
-	}
-	Noun() {
-		tag = NT_NIL;
-	}
 	static class Noun NIL;
+
+	Noun(int64_t i);
+	Noun(double d);
+	Noun(bool b);
+	Noun(char c);
+	Noun();
 	
-	NounTag getTag() const { return tag; }
-	NounValue getValue() const { return value; }
-	int64_t getIntegerValue() const {
-		return value.integer;
-	}
-	double getFloatingValue() const {
-		return value.floating;
-	}
-	bool getBooleanValue() const {
-		return value.boolean;
-	}
-	char getCharacterValue() const {
-		return value.character;
-	}
+	NounTag getTag() const;
+	NounValue getValue() const;
+	int64_t getIntegerValue() const;
+	double getFloatingValue() const;
+	bool getBooleanValue() const;
+	char getCharacterValue() const;
 	
-	bool isInteger() const {
-		return tag == NT_INTEGER;
-	}
-	bool isFloating() const {
-		return tag == NT_FLOATING;
-	}
-	bool isBoolean() const {
-		return tag == NT_BOOLEAN;
-	}
-	bool isCharacter() const {
-		return tag == NT_CHARACTER;
-	}
+	bool isInteger() const;
+	bool isFloating() const;
+	bool isBoolean() const;
+	bool isCharacter() const;
 	
-	bool isNumber() const {
-		return isInteger() || isFloating();
-	}
+	bool isNumber() const;
+	template <class T> Noun castTo() const;
 	
-	template <class T>
-	Noun castTo() const {
-		switch(tag) {
-			case NT_INTEGER:
-				return Noun((T) value.integer);
-			
-			case NT_FLOATING:
-				return Noun((T) value.floating);
-			
-			case NT_BOOLEAN:
-				return Noun(value.boolean ? (T)1 : (T)0);
-			
-			case NT_CHARACTER:
-				return Noun((T) value.character);
-			
-			default:
-				return Noun::NIL;
-		}
-	}
+	Noun toFloating() const;
+	double asFloating() const;
 	
-	Noun toFloating() const {
-		return castTo<double>();
-	}
-	double asFloating() const {
-		return toFloating().getFloatingValue();
-	}
+	Noun toInteger() const;
+	int64_t asInteger() const;
 	
-	Noun toInteger() const {
-		return castTo<int64_t>();
-	}
-	int64_t asInteger() const {
-		return toInteger().getIntegerValue();
-	}
+	Noun toCharacter() const;
+	char asCharacter() const;
 	
-	Noun toCharacter() const {
-		return castTo<char>();
-	}
-	char asCharacter() const {
-		return toCharacter().getCharacterValue();
-	}
-	
-	Noun toBoolean() const {
-		return castTo<bool>();
-	}
-	bool asBoolean() const {
-		return toBoolean().getBooleanValue();
-	}
-	
+	Noun toBoolean() const;
+	bool asBoolean() const;
+
 	friend Noun operator+(const Noun&, const Noun&);
-	
-	std::string toString() const {
-		switch(tag) {
-			case NT_NIL:
-				return "nil";
-			
-			case NT_INTEGER:
-				return std::to_string(value.integer);
-				
-			case NT_FLOATING:
-				return std::to_string(value.floating);
-				
-			case NT_BOOLEAN:
-				return value.boolean ? "true" : "false";
-			
-			case NT_CHARACTER:
-				return "'" + std::string(1, value.character);
-			
-			default:
-				return "(no representation available)";
-		}
-	}
+	std::string toString() const;
 };
 

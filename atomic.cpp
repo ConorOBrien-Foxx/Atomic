@@ -2,7 +2,8 @@
 
 #include "noun.h"
 #include "data.h"
+#include "entity.h"
 
 int main() {
-	std::cout << Data(3L);
+	Data res(DT_LIST);
 }

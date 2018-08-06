@@ -3,4 +3,4 @@ units=atomic.cpp noun.cpp data.cpp entity.cpp
 out=atomic
 options=-g -Wall -Werror=return-type
 make:
-	$(compile) $(options) $(units) -o $(out)
+	$(compile) -std=c++17 $(options) $(units) -o $(out)

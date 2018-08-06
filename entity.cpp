@@ -1,7 +1,6 @@
 #include "entity.h"
 #include <iostream>
 
-template <class T>
-std::ostream& operator<<(std::ostream& os, const T& n) {
+std::ostream& operator<<(std::ostream& os, const Entity& n) {
 	return os << n.toString();
 }
